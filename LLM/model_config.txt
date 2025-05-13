@@ -1,0 +1,4 @@
+model_name = gpt2-medium
+auto_run = False
+live_output = True
+user_input = 7,8
