@@ -7,16 +7,21 @@ def load_model(model_dir):
     return tokenizer, model
 
 def generate_response(prompt, tokenizer, model, max_length=200):
-    inputs = tokenizer(prompt, return_tensors='pt')
+    if tokenizer.pad_token is None:
+        tokenizer.pad_token = tokenizer.eos_token
+
+    inputs = tokenizer(prompt, return_tensors='pt', padding=True, truncation=True)
 
     outputs = model.generate(
         inputs['input_ids'],
-        max_length=max_length,
+        attention_mask=inputs['attention_mask'],
+        max_new_tokens=200,  
         temperature=0.9,
         top_p=0.95,
         top_k=50,
         do_sample=True,
-        num_return_sequences=1
+        num_return_sequences=1,
+        pad_token_id=tokenizer.pad_token_id,
     )
 
     return tokenizer.decode(outputs[0], skip_special_tokens=True)

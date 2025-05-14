@@ -6,19 +6,16 @@ def load_model(model_dir):
     model = GPT2LMHeadModel.from_pretrained(model_dir)
     return tokenizer, model
 
-def generate_response(prompt, tokenizer, model, max_length=200):
+def generate_response(prompt, tokenizer, model, max_new_tokens=500):
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
     inputs = tokenizer(prompt, return_tensors='pt', padding=True, truncation=True)
-    input_ids = inputs['input_ids']
-    attention_mask = inputs['attention_mask']
 
-    # Generate output
     output_ids = model.generate(
-        input_ids,
-        attention_mask=attention_mask,
-        max_length=max_length,
+        inputs['input_ids'],
+        attention_mask=inputs['attention_mask'],
+        max_new_tokens=max_new_tokens,
         temperature=0.9,
         top_p=0.95,
         top_k=50,
@@ -27,8 +24,8 @@ def generate_response(prompt, tokenizer, model, max_length=200):
         pad_token_id=tokenizer.pad_token_id,
     )
 
-    # Strip the prompt from the output
-    generated_ids = output_ids[0][input_ids.shape[-1]:]  # remove input prompt
+    # Strip prompt from generated part
+    generated_ids = output_ids[0][inputs['input_ids'].shape[-1]:]
     return tokenizer.decode(generated_ids, skip_special_tokens=True).strip()
 
 if __name__ == "__main__":

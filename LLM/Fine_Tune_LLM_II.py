@@ -1,5 +1,5 @@
 import os
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # FATAL only
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # Show only fatal TF messages
 os.environ["OMP_NUM_THREADS"] = str(os.cpu_count())
 os.environ["MKL_NUM_THREADS"] = str(os.cpu_count())
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
@@ -14,7 +14,6 @@ from transformers import (
     Trainer,
     TrainingArguments
 )
-
 from datasets import load_dataset
 
 # Get model name from environment or fallback
@@ -31,14 +30,24 @@ if tokenizer.pad_token is None:
 def fine_tune_model(dataset_path, model_output_dir):
     print("📄 Loading dataset using streaming-friendly Datasets library...")
 
-    # Load text file line-by-line
+    # Load line-by-line text file
     dataset = load_dataset("text", data_files={"train": dataset_path})["train"]
+    print(f"📦 Raw samples loaded: {len(dataset)}")
 
-    # Tokenize the dataset on-the-fly
+    # Tokenize and filter out empty lines
     def tokenize_function(example):
-        return tokenizer(example["text"], truncation=True, max_length=128)
+        texts = [t for t in example["text"] if isinstance(t, str) and t.strip()]
+        return tokenizer(texts, truncation=True, max_length=128)
 
-    tokenized_dataset = dataset.map(tokenize_function, batched=True, remove_columns=["text"])
+    tokenized_dataset = dataset.map(
+        tokenize_function,
+        batched=True,
+        remove_columns=["text"]
+    ).filter(lambda x: len(x["input_ids"]) > 0)
+
+    print(f"✅ Valid tokenized samples: {len(tokenized_dataset)}")
+    if len(tokenized_dataset) == 0:
+        raise RuntimeError("❌ No usable data after tokenization. Check your input file.")
 
     data_collator = DataCollatorForLanguageModeling(
         tokenizer=tokenizer,
