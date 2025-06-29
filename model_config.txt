@@ -1,4 +1,0 @@
-model_name = distilgpt2
-auto_run = False
-live_output = True
-user_input = 10
