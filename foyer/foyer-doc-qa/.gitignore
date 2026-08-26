@@ -1,0 +1,12 @@
+.env
+Key.txt
+__pycache__/
+*.pyc
+.pytest_cache/
+.streamlit/secrets.toml
+.venv/
+.claude/
+
+# The sample PDF is generated, not committed -- run
+# scripts/make_sample_pdf.py to recreate it (it creates sample_docs/ itself).
+sample_docs/*.pdf

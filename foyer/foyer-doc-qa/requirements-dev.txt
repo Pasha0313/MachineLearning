@@ -1,0 +1,8 @@
+# Dev-only: not required to run the app. Used solely by
+# scripts/demo_keyword_beats_cosine.py so that demo can run fully offline
+# with a real embedding model instead of calling the OpenAI API.
+sentence-transformers
+
+# Dev-only: used solely by scripts/make_sample_pdf.py to generate the
+# fictitious test fixture. The deployed app never generates PDFs itself.
+reportlab
