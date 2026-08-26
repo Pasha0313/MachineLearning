@@ -262,18 +262,28 @@ one before it.
   OPENAI_API_KEY = "sk-..."
   ```
   (typed directly into Streamlit's secrets UI, never committed). Deploy —
-  first build takes a few minutes.
+  first build takes a few minutes. *(Done 2026-08-26. Live URL:
+  **https://machinelearning-crfe8zkcb2arxd9xludczc.streamlit.app/** —
+  "Indexed 4 passages" confirmed on the sample PDF. Sharing setting
+  confirmed as "This app is public and searchable," and confirmed
+  genuinely public by opening it in a fresh/incognito Chrome profile with
+  no Streamlit login — not just by reading the settings panel. Note: an
+  automated `curl`/fetch check of this URL redirects through
+  `share.streamlit.io/-/auth/app` to a `/-/login` page and looks like an
+  auth wall — that's a false alarm from tooling that doesn't run
+  JavaScript or hold cookies, not a real access restriction. Don't
+  re-alarm on that same signal later; the incognito-browser test is the
+  one that actually settles it.)*
 
-- [ ] **3. Open the live URL yourself and run all four question types by hand**
-  before sending anything:
-  1. Lookup — "What is the policy number?" → `FOY-HOME-2026-004417`, page 1.
-  2. List — "What does the policy exclude?" → multiple exclusions.
-  3. Comparison — "Is the buildings sum insured higher than the contents sum insured?" → 480,000 vs 65,000.
-  4. Not found — "Does this policy cover cyber or identity theft?" → the
-     fixed `NOT FOUND IN DOCUMENT.` refusal.
+- [x] **3. Open the live URL yourself and run all four question types by hand.**
+  *(Done 2026-08-26, on the actual deployed app, by the human — not a
+  pipeline call against local code, which was the whole point of this step.)*
+  1. Lookup — "What is the policy number?" → `FOY-HOME-2026-004417 [1]`, page 1. ✓
+  2. List — "What does the policy exclude?" → 8 exclusions listed, page 3. ✓
+  3. Comparison — "Is the buildings sum insured higher than the contents sum insured?" → 480,000 vs 65,000, correct. ✓
+  4. Not found — "Does this policy cover cyber or identity theft?" → `NOT FOUND IN DOCUMENT.` ✓
 
-  This is the one step an agent genuinely cannot do for you — it has to be
-  your own eyes on the deployed app, not a pipeline call against local code.
+  All four confirmed matching the README's claimed behavior.
 
 - [ ] **4. Send the reply to Kezhan.**
   Gated on step 3 actually passing. Needs: the live link; the two sentences
