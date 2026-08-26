@@ -228,8 +228,8 @@ one before it.
   UI showing "Requests will start to fail when limit is reached," not the
   old soft-budget "may exceed this" wording.)*
 
-- [ ] **2. Push to GitHub and deploy on Streamlit Community Cloud.**
-  *(Revised twice, 2026-08-26: first found Streamlit is no longer a
+- [x] **2a. Push to GitHub.** *(Done 2026-08-26.)*
+  *(Revised twice before this: first found Streamlit is no longer a
   selectable Spaces SDK on HF — it moved to Docker. Then found Docker (and
   Gradio) Spaces now require a paid HF PRO plan for personal accounts,
   confirmed from HF's own docs, not assumed. Static Spaces are the only
@@ -239,18 +239,25 @@ one before it.
   Dockerfile stays in the repo, tested and working, as a documented
   fallback if HF PRO is ever worth it later — see README's Deploy section.)*
 
-  GitHub username: not yet confirmed (HF username is `pasha00313`, but
-  GitHub may differ — don't assume). Create a new repo at github.com/new
-  (name e.g. `foyer-doc-qa`, public so Kezhan can read the hand-written
-  retrieval code directly, matching what he asked to see). Then, from
-  `c:\Data\Job\Luxembourg\Foyer Group`:
-  ```bash
-  git remote add origin https://github.com/<your-username>/<repo-name>.git
-  git push -u origin master
-  ```
-  At **share.streamlit.io**: sign in with GitHub, **New app**, pick the repo
-  and branch, main file path `app.py`. In **Advanced settings**, add a
-  secret:
+  Not a fresh standalone repo — the human pointed at an existing repo with a
+  placeholder subfolder instead:
+  **https://github.com/Pasha0313/MachineLearning/tree/master/foyer/foyer-doc-qa**
+  (public). Pushed by: sparse-cloning just the `foyer/` path of
+  `MachineLearning` into a scratch dir, replacing the placeholder file
+  there with every file tracked in this local repo (`git ls-files`, 19
+  files — no `.venv`, no `.env`, no `Key.txt`, no PDFs), committing, and
+  pushing a normal additive commit (`a6dcc3f..0f3745d`) that touches only
+  `foyer/foyer-doc-qa/` — the rest of `MachineLearning` is untouched.
+  Verified server-side after push with `git ls-remote` (not just trusting
+  the push output), since a first GitHub web-fetch to eyeball the result
+  returned a stale 15-minute cache still showing the old placeholder.
+
+- [ ] **2b. Deploy on Streamlit Community Cloud.**
+  At **share.streamlit.io**: sign in with GitHub, **New app**, repository
+  `Pasha0313/MachineLearning`, branch `master`, **main file path**
+  `foyer/foyer-doc-qa/app.py` (Streamlit Cloud supports a subdirectory path
+  like this directly — no need for a dedicated repo). In **Advanced
+  settings**, add a secret:
   ```
   OPENAI_API_KEY = "sk-..."
   ```

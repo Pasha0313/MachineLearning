@@ -221,15 +221,16 @@ Hugging Face Spaces: HF now requires a paid PRO plan to create a Docker or
 Gradio Space (confirmed from HF's own docs -- Static is the only free SDK
 left there, and this app needs a Python backend, so Static doesn't work for
 it). Streamlit Community Cloud is free, needs no Dockerfile or SDK
-selection, and runs `app.py` directly off `requirements.txt`. To ship it:
+selection, and runs `app.py` directly off `requirements.txt` -- including
+from a subdirectory of a larger repo, which is how this one is actually
+hosted: **github.com/Pasha0313/MachineLearning/tree/master/foyer/foyer-doc-qa**
+(this project living alongside other, unrelated repos rather than in a
+dedicated one of its own).
 
-```bash
-git remote add origin https://github.com/<your-username>/foyer-doc-qa.git
-git push -u origin master
-```
-
-Then at share.streamlit.io: **New app** -> pick this repo/branch -> main
-file path `app.py` -> in **Advanced settings**, add a secret:
+At share.streamlit.io: **New app** -> repository `Pasha0313/MachineLearning`,
+branch `master`, main file path `foyer/foyer-doc-qa/app.py` (Streamlit Cloud
+supports a subdirectory path directly) -> in **Advanced settings**, add a
+secret:
 ```
 OPENAI_API_KEY = "sk-..."
 ```
@@ -260,7 +261,11 @@ pinned: false
 ```
 -- then `git remote add space <space-url>` and `git push space master:main`,
 same secret-setting step as above but under the Space's
-Settings -> Repository secrets instead.
+Settings -> Repository secrets instead. Note this repo now lives in a
+subfolder of a larger one (see above), so a straight `git push` to an HF
+Space -- which expects the pushed repo root to *be* the app -- would need
+the same sparse-checkout-and-copy approach used to get this onto GitHub in
+the first place, not a plain push from this folder.
 
 ## What this decides
 
