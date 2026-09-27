@@ -13,6 +13,29 @@ Every folder follows the same convention: a two-digit prefix gives the order
 02-projects/                 Applied, end-to-end projects grouped by domain
 ```
 
+## Setup
+
+Each environment is a `.venv` placed next to its `requirements.txt`. There is
+one shared environment for all of `01-ml-fundamentals/` and one per project,
+because the projects need conflicting stacks (TensorFlow 2.15 vs PyTorch,
+llama-cpp, OpenAI...). Requires Python 3.11.
+
+```powershell
+.\setup_envs.ps1                  # create/install every environment
+.\setup_envs.ps1 churn            # only environments whose path matches "churn"
+.\setup_envs.ps1 -Recreate foyer  # rebuild one from scratch
+```
+
+Then activate the environment for whatever you're working on, e.g.
+
+```powershell
+cd 02-projects\02-business-analytics\01-customer-churn-prediction
+.\.venv\Scripts\Activate.ps1
+```
+
+In Jupyter / VS Code, notebook projects are registered as kernels named
+`ML: <folder>`.
+
 ## 01 · ML fundamentals
 
 Each algorithm folder contains `python/` (script + notebook + data) and, where

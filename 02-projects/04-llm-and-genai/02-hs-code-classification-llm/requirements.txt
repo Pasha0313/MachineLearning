@@ -1,0 +1,9 @@
+# Prebuilt CPU wheels for llama-cpp-python (avoids needing a C++ compiler)
+--extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+llama-cpp-python
+ctransformers
+pandas
+openpyxl
+requests
+streamlit
+# Model file (not in repo): mistral-7b-instruct-v0.1.Q4_K_M.gguf -> models/

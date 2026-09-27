@@ -1,0 +1,6 @@
+numpy<2
+pandas
+matplotlib
+scikit-learn
+optuna
+tensorflow==2.15.*   # Keras 2 API (keras.preprocessing.*, tf.keras) - removed in Keras 3

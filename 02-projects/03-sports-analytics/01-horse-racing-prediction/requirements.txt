@@ -1,0 +1,11 @@
+numpy<2
+pandas
+matplotlib
+plotly
+seaborn
+scipy
+scikit-learn
+xgboost
+tqdm
+tensorflow==2.15.*   # Keras 2 API (keras.preprocessing.*, tf.keras) - removed in Keras 3
+ipykernel

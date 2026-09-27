@@ -1,0 +1,11 @@
+torch
+transformers
+accelerate
+datasets
+bert-score
+nltk
+numpy
+fastapi
+uvicorn
+pydantic
+playwright   # then run: python -m playwright install chromium
